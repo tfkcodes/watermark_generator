@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:watermark_generator/widgets/button.dart';
-import 'package:watermark_generator/widgets/decorated_container.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:watermark_generator/widgets/home/image_holder.dart';
+import 'package:watermark_generator/widgets/decorated_container.dart';
 import 'package:watermark_generator/widgets/home/position_select.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   AlignmentGeometry selectedPosition = Alignment.center;
   String watermarkText = "";
   File? selectedFile;
+  String selectedNavItem = 'Home';
 
   bool isExporting = false;
 
@@ -66,6 +65,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isExporting = false;
       });
+      Fluttertoast.showToast(msg: "Image saved to gallery");
     } catch (e) {
       Fluttertoast.showToast(msg: "Something went wrong");
     }
@@ -76,8 +76,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(0xffF8FAFB),
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.blue,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -89,8 +88,110 @@ class _HomePageState extends State<HomePage> {
             Text(
               "WATERMARK",
               style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
+            ),
+          ],
+        ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.blue,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    // You can add an image here using the Image.network or Image.asset widget
+                    // For simplicity, let's add some text
+                    child: Text(
+                      'T',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Tfkcodes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    'contact@lucianojr.me',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+              child: ListTile(
+                selected: selectedNavItem == 'Home',
+                selectedTileColor: Colors.blue,
+                selectedColor: Colors.white,
+                leading: Icon(Icons.home),
+                title: Text('Home'),
+                onTap: () {
+                  // Add your home screen navigation logic here
+                  setState(() {
+                    selectedNavItem = 'Home';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+              child: ListTile(
+                selected: selectedNavItem == 'Settings',
+                selectedTileColor: Colors.blue,
+                selectedColor: Colors.white,
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+                onTap: () {
+                  // Add your settings screen navigation logic here
+                  setState(() {
+                    selectedNavItem = 'Settings';
+                  });
+                  Navigator.pop(context);
+                },
               ),
             ),
           ],
