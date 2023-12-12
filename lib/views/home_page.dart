@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -166,8 +166,8 @@ class _HomePageState extends State<HomePage> {
                 selected: selectedNavItem == 'Home',
                 selectedTileColor: Colors.blue,
                 selectedColor: Colors.white,
-                leading: Icon(Icons.home),
-                title: Text('Home'),
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
                 onTap: () {
                   // Add your home screen navigation logic here
                   setState(() {
@@ -183,8 +183,8 @@ class _HomePageState extends State<HomePage> {
                 selected: selectedNavItem == 'Settings',
                 selectedTileColor: Colors.blue,
                 selectedColor: Colors.white,
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
                 onTap: () {
                   // Add your settings screen navigation logic here
                   setState(() {

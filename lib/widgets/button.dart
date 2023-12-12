@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -21,7 +21,7 @@ class Button extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 23, 23, 23),
+            color:  Colors.blue,
             borderRadius: BorderRadius.circular(10),
           ),
           height: 50,

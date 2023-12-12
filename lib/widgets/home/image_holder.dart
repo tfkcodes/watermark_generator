@@ -1,11 +1,11 @@
 import 'dart:io';
-
+import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:watermark_generator/widgets/decorated_container.dart';
+
+
 
 class ImageHolder extends StatefulWidget {
   final GlobalKey thumbnailKey;
