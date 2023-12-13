@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:watermark_generator/widgets/button.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:watermark_generator/widgets/components/button.dart';
 import 'package:watermark_generator/widgets/home/image_holder.dart';
 import 'package:watermark_generator/widgets/decorated_container.dart';
+import 'package:watermark_generator/widgets/drawer/custom_drawer.dart';
 import 'package:watermark_generator/widgets/home/position_select.dart';
+import 'package:watermark_generator/widgets/components/color_picker_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +31,19 @@ class _HomePageState extends State<HomePage> {
   bool isExporting = false;
 
   final GlobalKey thumbnailKey = GlobalKey();
+  Color selectedColor = Colors.white;
+  List<Color> colorSuggestions = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.teal,
+    Colors.pink,
+    Colors.amber,
+    Colors.indigo,
+    Colors.deepOrange,
+  ];
 
   handleExport() async {
     if (selectedFile == null) {
@@ -117,85 +132,13 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    // You can add an image here using the Image.network or Image.asset widget
-                    // For simplicity, let's add some text
-                    child: Text(
-                      'T',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Tfkcodes',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    'contact@lucianojr.me',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-              child: ListTile(
-                selected: selectedNavItem == 'Home',
-                selectedTileColor: Colors.blue,
-                selectedColor: Colors.white,
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () {
-                  // Add your home screen navigation logic here
-                  setState(() {
-                    selectedNavItem = 'Home';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-              child: ListTile(
-                selected: selectedNavItem == 'Settings',
-                selectedTileColor: Colors.blue,
-                selectedColor: Colors.white,
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-                onTap: () {
-                  // Add your settings screen navigation logic here
-                  setState(() {
-                    selectedNavItem = 'Settings';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
+       drawer: AppDrawer(
+        selectedNavItem: selectedNavItem,
+        onNavItemChanged: (item) {
+          setState(() {
+            selectedNavItem = item;
+          });
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -213,6 +156,7 @@ class _HomePageState extends State<HomePage> {
                   selectedFile: selectedFile,
                   thumbnailKey: thumbnailKey,
                   selectedPosition: selectedPosition,
+                  textColor: selectedColor,
                   sliderValue: sliderValue),
               // * Watermark
               DecoratedContainer(
@@ -240,6 +184,9 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
+              ),
+              DecoratedContainer(
+                child: colorPickerButton(),
               ),
               // * Position
               PositionSelect(
@@ -279,5 +226,27 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget colorPickerButton() {
+    return Button(
+        text: "Pick COlor",
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ColorPickerDialog(
+                colorSuggestions: colorSuggestions,
+                selectedColor: selectedColor,
+                onColorSelected: (color) {
+                  setState(() {
+                    selectedColor = color;
+                  });
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          );
+        });
   }
 }

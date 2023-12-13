@@ -5,8 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:watermark_generator/widgets/decorated_container.dart';
 
-
-
 class ImageHolder extends StatefulWidget {
   final GlobalKey thumbnailKey;
   final File? selectedFile;
@@ -14,6 +12,8 @@ class ImageHolder extends StatefulWidget {
   final Function(File) onSelected;
   final double sliderValue;
   final AlignmentGeometry selectedPosition;
+  final Color textColor; // Add this line
+
   const ImageHolder({
     Key? key,
     required this.thumbnailKey,
@@ -21,6 +21,7 @@ class ImageHolder extends StatefulWidget {
     required this.watermarkText,
     required this.onSelected,
     required this.sliderValue,
+    required this.textColor,
     required this.selectedPosition,
   }) : super(key: key);
 
@@ -73,7 +74,7 @@ class _ImageHolderState extends State<ImageHolder> {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: widget.sliderValue,
-                          color: Colors.white.withOpacity(0.4),
+                          color: widget.textColor.withOpacity(0.6),
                         ),
                       ),
                     ),
