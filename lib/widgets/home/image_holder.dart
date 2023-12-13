@@ -12,18 +12,20 @@ class ImageHolder extends StatefulWidget {
   final Function(File) onSelected;
   final double sliderValue;
   final AlignmentGeometry selectedPosition;
-  final Color textColor; // Add this line
+  final Color textColor;
+  final File? watermarkLogo; // Add this line
 
-  const ImageHolder({
-    Key? key,
-    required this.thumbnailKey,
-    required this.selectedFile,
-    required this.watermarkText,
-    required this.onSelected,
-    required this.sliderValue,
-    required this.textColor,
-    required this.selectedPosition,
-  }) : super(key: key);
+  const ImageHolder(
+      {Key? key,
+      required this.thumbnailKey,
+      required this.selectedFile,
+      required this.watermarkText,
+      required this.onSelected,
+      required this.sliderValue,
+      required this.textColor,
+      required this.selectedPosition,
+      this.watermarkLogo})
+      : super(key: key);
 
   @override
   State<ImageHolder> createState() => _ImageHolderState();
@@ -67,6 +69,16 @@ class _ImageHolderState extends State<ImageHolder> {
                         ),
                       ),
                     ),
+                    if (widget.watermarkLogo != null)
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Image.file(
+                          widget.watermarkLogo!,
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
                     Align(
                       alignment: widget.selectedPosition,
                       child: Text(

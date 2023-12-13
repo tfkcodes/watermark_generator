@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:watermark_generator/widgets/components/button.dart';
 import 'package:watermark_generator/widgets/home/image_holder.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   String selectedNavItem = 'Home';
 
   bool isExporting = false;
+  File? watermarkLogo;
 
   final GlobalKey thumbnailKey = GlobalKey();
   Color selectedColor = Colors.white;
@@ -44,6 +46,29 @@ class _HomePageState extends State<HomePage> {
     Colors.indigo,
     Colors.deepOrange,
   ];
+  void _pickWatermarkImage() async {
+    try {
+      ImagePicker imagePicker = ImagePicker();
+      XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+      if (file != null) {
+        // Handle the selected image file, you can set it as the watermark image
+        // For example, you can use it in your watermark logic
+        // Update your logic based on your use case
+        File watermarkImage = File(file.path);
+        // You can use watermarkImage as needed, e.g., set it as the watermark logo
+        // For example, you can update the ImageHolder's watermarkLogo
+        setState(() {
+          watermarkLogo = watermarkImage;
+        });
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Something went wrong",
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+      );
+    }
+  }
 
   handleExport() async {
     if (selectedFile == null) {
@@ -132,7 +157,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-       drawer: AppDrawer(
+      drawer: AppDrawer(
         selectedNavItem: selectedNavItem,
         onNavItemChanged: (item) {
           setState(() {
@@ -167,9 +192,13 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: "Watermark text".toUpperCase(),
-                    hintStyle: const TextStyle(fontSize: 13),
-                  ),
+                      hintText: "Watermark text".toUpperCase(),
+                      hintStyle: const TextStyle(fontSize: 13),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            _pickWatermarkImage();
+                          },
+                          icon: Icon(Icons.image))),
                 ),
               ),
               // * Size selector
